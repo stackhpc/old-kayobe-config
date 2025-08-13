@@ -5,7 +5,7 @@
 # Ironic Python Agent (IPA) image build configuration.
 
 # Whether to build IPA images from source.
-#ipa_build_images:
+ipa_build_images: true
 
 # URL of IPA source repository.
 #ipa_build_source_url:
@@ -14,10 +14,10 @@
 #ipa_build_source_version:
 
 # URL of IPA builder source repository.
-#ipa_builder_source_url:
+ipa_builder_source_url: https://github.com/stackhpc/ironic-python-agent-builder
 
 # Version of IPA builder source repository. Default is {{ openstack_branch }}.
-#ipa_builder_source_version:
+ipa_builder_source_version: bugfix/service-enable
 
 # List of additional build host packages to install. Default is an empty list.
 #ipa_build_dib_host_packages_extra:
@@ -29,9 +29,13 @@
 # "ironic-python-agent-ramdisk"] otherwise.
 #ipa_build_dib_elements_default:
 
+
 # List of additional Diskimage Builder (DIB) elements to use when building IPA
 # images. Default is none.
-#ipa_build_dib_elements_extra:
+ipa_build_dib_elements_extra:
+  - stackhpc-ipa-hardware-managers
+  - devuser
+  - disable-selinux
 
 # List of Diskimage Builder (DIB) elements to use when building IPA images.
 # Default is combination of ipa_build_dib_elements_default and
@@ -44,7 +48,11 @@
 
 # Dictionary of additional environment variables to provide to Diskimage
 # Builder (DIB) during IPA image build.
-#ipa_build_dib_env_extra:
+ipa_build_dib_env_extra:
+  DIB_IPA_STACKHPC_IPA_HARDWARE_MANAGERS_BRANCH: example
+  DIB_IPA_STACKHPC_IPA_HARDWARE_MANAGERS_REPO: "git+https://github.com/stackhpc/stackhpc-ipa-hardware-managers.git"
+  DIB_DEV_USER_PWDLESS_SUDO: Yes
+  DIB_DEV_USER_PASSWORD: letmein123
 
 # Dictionary of environment variables to provide to Diskimage Builder (DIB)
 # during IPA image build.
@@ -86,8 +94,7 @@
 #ipa_images_kernel_name:
 
 # URL of Ironic deployment kernel image to download.
-# yamllint disable-line rule:line-length
-ipa_kernel_upstream_url: "https://tarballs.openstack.org/ironic-python-agent/tinyipa/files/tinyipa{{ ipa_images_upstream_url_suffix }}.vmlinuz"
+#ipa_kernel_upstream_url:
 
 # URL of checksum of Ironic deployment kernel image.
 #ipa_kernel_checksum_url:
@@ -99,8 +106,7 @@ ipa_kernel_upstream_url: "https://tarballs.openstack.org/ironic-python-agent/tin
 #ipa_images_ramdisk_name:
 
 # URL of Ironic deployment ramdisk image to download.
-# yamllint disable-line rule:line-length
-ipa_ramdisk_upstream_url: "https://tarballs.openstack.org/ironic-python-agent/tinyipa/files/tinyipa{{ ipa_images_upstream_url_suffix }}.gz"
+#ipa_ramdisk_upstream_url:
 
 # URL of checksum of Ironic deployment ramdisk image.
 #ipa_ramdisk_checksum_url:
@@ -138,7 +144,9 @@ ipa_ramdisk_upstream_url: "https://tarballs.openstack.org/ironic-python-agent/ti
 #ipa_kernel_options_default:
 
 # List of additional kernel parameters for Ironic python agent.
-#ipa_kernel_options_extra:
+ipa_kernel_options_extra:
+  #Useful until NTP is configured by default
+  - ipa-insecure=1
 
 # List of kernel parameters for Ironic python agent.
 #ipa_kernel_options:
